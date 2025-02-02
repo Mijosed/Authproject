@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        span#username {
+            color: #007bff;
+            font-weight: bold;
+        }
+        button {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #c82333;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const logoutBtn = document.getElementById("logout");
+
+            // Récupérer le nom de l'utilisateur
+            fetch('/api/user', { credentials: 'include' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.username) {
+                        document.getElementById("username").innerText = data.username;
+                    }
+                });
+
+            // Gestion de la déconnexion
+            logoutBtn.addEventListener("click", () => {
+                fetch('/logout', {
+                    method: 'POST',
+                    credentials: 'include',
+                })
+                .then(() => {
+                    window.location.href = "/index.html";
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Bienvenue <span id="username">Utilisateur</span>!</h1>
+    <button id="logout">Se déconnecter</button>
+</body>
+</html>
